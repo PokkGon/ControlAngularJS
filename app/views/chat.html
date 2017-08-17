@@ -1,0 +1,43 @@
+﻿<div class="container">
+	<div class="row chat">
+		<div class="col-md-12">
+			<h2>Chat</h2>
+			<h4>Usuario: {{username}}</h4>
+		</div>
+		<div class="col-md-12" style="padding:0;">
+			<div class="col-md-8">
+				<button class="btn btn-primary" ng-click="Messages.invert()" ng-if="!Messages.reverse">Ordenar: Más nuevos arriba</button>
+				<p><button class="btn btn-primary" ng-click="Messages.invert()" ng-if="Messages.reverse">Ordenar: Más antiguos arriba</button></p>
+				<div class="well">
+					<div class="panel panel-default" ng-repeat="message in Messages.data | orderBy: 'createdAt': Messages.reverse" ng-if="!Messages.isBlock(message.user)">
+					  <div class="panel-body">
+						<button type="button" class="close" aria-label="Close" ng-if="Messages.user == message.user" ng-click="Messages.eliminar(message._id,message.user)"><span aria-hidden="true">&times;</span></button>
+					    <p><b>{{message.user}}</b></p>
+						<p>{{message.desc}}</p>
+						<p><small><i>{{message.createdAt}}</i></small></p>
+					  </div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="list-group">
+					<div class="list-group-item" ng-repeat="user in Messages.users">
+						<a style="color:red" ng-if="!Messages.isBlock(user.user)" ng-click="Messages.bloquear(user.user)"><span class="glyphicon glyphicon-ban-circle pull-right" aria-hidden="true"></span></a>
+						<span ng-style="{'color': Messages.isBlock(user.user) ? 'gray': 'black'}">{{user.user}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12" style="padding:0;">
+			<div class="col-md-8">
+				<form ng-submit="Messages.crear();">
+					<textarea class="form-control" rows="3" ng-model="Messages.new"></textarea>
+				</form>
+			</div>
+			<div clas="col-md-4">
+				<button type="button" class="btn btn-primary" ng-click="Messages.crear()">Enviar</button>
+				<p ng-show="Messages.loading">Enviando mensaje...</p>
+			</div>
+		</div>
+	</div>
+</div>
